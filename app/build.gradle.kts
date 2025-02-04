@@ -54,4 +54,7 @@ dependencies {
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.0")
 
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+
+
 }
