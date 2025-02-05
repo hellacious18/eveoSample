@@ -26,9 +26,9 @@ class VerifyActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_verify)
 
-        Toast.makeText(this, "Sign up successful", Toast.LENGTH_SHORT).show()
-
-
+        if (intent.getBooleanExtra("IS_NEW_USER", false)) {
+            Toast.makeText(this, "Sign up successful", Toast.LENGTH_SHORT).show()
+        }
 
         verifyEmail = findViewById(R.id.editTextVerifyEmail)
         verifyCode = findViewById(R.id.editTextVerifyCode)
@@ -49,7 +49,6 @@ class VerifyActivity : AppCompatActivity() {
             )
             ResendTimer()
         }
-
 
         verifyButton.setOnClickListener {
             val email = verifyEmail.text.toString()

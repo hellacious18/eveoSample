@@ -9,54 +9,55 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import com.amplifyframework.auth.cognito.result.AWSCognitoAuthSignOutResult
 import com.amplifyframework.auth.options.AuthSignOutOptions
 import com.amplifyframework.core.Amplify
+import com.example.eveosample.fragments.BeautyFragment
+import com.example.eveosample.fragments.FashionFragment
+import com.example.eveosample.fragments.ProfileFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeActivity : AppCompatActivity() {
 
-    private lateinit var signoutButton: Button
+    private lateinit var bottomNavigationView: BottomNavigationView
+    private val fragmentManager = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_home)
 
-        signoutButton = findViewById(R.id.buttonSignOut)
+        //passing email to the profile fragment
+        val email = intent.getStringExtra("EMAIL_KEY") ?: ""
+        val fragment = ProfileFragment()
+        val bundle = Bundle()
+        bundle.putString("EMAIL_KEY", email)
+        fragment.arguments = bundle
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container_view, fragment)
+            .commit()
 
-        signoutButton.setOnClickListener {
+        bottomNavigationView = findViewById(R.id.bottomNavigationView)
 
-            Amplify.Auth.signOut { signOutResult ->
-                when(signOutResult) {
-                    is AWSCognitoAuthSignOutResult.CompleteSignOut -> {
-                        // Sign Out completed fully and without errors.
-                        Log.i("AuthQuickStart", "Signed out successfully")
-//                        Toast.makeText(this, "Signed out successfully", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this, MainActivity::class.java))
-                    }
-                    is AWSCognitoAuthSignOutResult.PartialSignOut -> {
-                        // Sign Out completed with some errors. User is signed out of the device.
-                        signOutResult.hostedUIError?.let {
-                            Log.e("AuthQuickStart", "HostedUI Error", it.exception)
-                            // Optional: Re-launch it.url in a Custom tab to clear Cognito web session.
-
-                        }
-                        signOutResult.globalSignOutError?.let {
-                            Log.e("AuthQuickStart", "GlobalSignOut Error", it.exception)
-                            // Optional: Use escape hatch to retry revocation of it.accessToken.
-                        }
-                        signOutResult.revokeTokenError?.let {
-                            Log.e("AuthQuickStart", "RevokeToken Error", it.exception)
-                            // Optional: Use escape hatch to retry revocation of it.refreshToken.
-                        }
-                    }
-                    is AWSCognitoAuthSignOutResult.FailedSignOut -> {
-                        // Sign Out failed with an exception, leaving the user signed in.
-                        Log.e("AuthQuickStart", "Sign out Failed", signOutResult.exception)
-                    }
-                }
-            }
+        if(savedInstanceState == null)
+        {
+            loadFragment(BeautyFragment())
         }
 
+        bottomNavigationView.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_beauty -> loadFragment(BeautyFragment())
+                R.id.nav_fashion -> loadFragment(FashionFragment())
+                R.id.nav_profile -> loadFragment(ProfileFragment())
+            }
+            true
+        }
+    }
+
+    private fun loadFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container_view, fragment)
+            .commit()
     }
 }

@@ -82,6 +82,7 @@ class MainActivity : AppCompatActivity() {
                     Log.d("AuthQuickStart", "Sign up result: $result")
                     val intent = Intent(this, VerifyActivity::class.java)
                     intent.putExtra("EMAIL_KEY", emailText)  // Pass the email
+                    intent.putExtra("IS_NEW_USER", true)
                     startActivity(intent)
 
                 },

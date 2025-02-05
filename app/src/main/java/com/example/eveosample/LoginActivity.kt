@@ -41,7 +41,10 @@ class LoginActivity : AppCompatActivity() {
                 { result ->
                     if (result.isSignedIn) {
                         Log.d("Login", "Log in succeeded")
-                        startActivity(Intent(this, HomeActivity::class.java))
+                        runOnUiThread { Toast.makeText(this, "Logged in successfully", Toast.LENGTH_SHORT).show() }
+                        val intent = Intent(this, HomeActivity::class.java)
+                        intent.putExtra("EMAIL_KEY", email)  // Pass the email
+                        startActivity(intent)
                         finish()
                     } else {
                         Log.d("Login", "Log in not complete")
