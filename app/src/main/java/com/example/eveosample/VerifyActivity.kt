@@ -2,23 +2,24 @@ package com.example.eveosample
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.amplifyframework.auth.AuthException
 import com.amplifyframework.core.Amplify
 
 class VerifyActivity : AppCompatActivity() {
 
-    private lateinit var verifyEmail: EditText
+    private lateinit var verifyEmail: TextView
     private lateinit var verifyCode: EditText
     private lateinit var verifyButton: Button
+    private lateinit var resendCode: TextView
+    private lateinit var timer: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,25 +29,32 @@ class VerifyActivity : AppCompatActivity() {
         Toast.makeText(this, "Sign up successful", Toast.LENGTH_SHORT).show()
 
 
+
         verifyEmail = findViewById(R.id.editTextVerifyEmail)
         verifyCode = findViewById(R.id.editTextVerifyCode)
+        resendCode = findViewById(R.id.textViewVerifyResendCode)
         verifyButton = findViewById(R.id.buttonVerify)
+        timer = findViewById(R.id.textViewVerifyTimer)
+
+        val email = intent.getStringExtra("EMAIL_KEY") ?: ""
+        verifyEmail.setText(email) // Set the email in the EditText
+
+        resendCode.paintFlags = resendCode.paintFlags or android.graphics.Paint.UNDERLINE_TEXT_FLAG
+        resendCode.setOnClickListener {
+            val email = verifyEmail.text.toString()
+
+            Amplify.Auth.resendSignUpCode(email,
+                { Log.i("AuthQuickstart", "Resend was successful") },
+                { Log.e("AuthQuickstart", "Resend failed", it) }
+            )
+            ResendTimer()
+        }
+
 
         verifyButton.setOnClickListener {
             val email = verifyEmail.text.toString()
             val verificationCode = verifyCode.text.toString()
 
-//            try {
-//                val code = verificationCode
-//                val result = Amplify.Auth.confirmSignUp("username", code)
-//                if (result.isSignUpComplete) {
-//                    Log.i("AuthQuickstart", "Signup confirmed")
-//                } else {
-//                    Log.i("AuthQuickstart", "Signup confirmation not yet complete")
-//                }
-//            } catch (error: AuthException) {
-//                Log.e("AuthQuickstart", "Failed to confirm signup", error)
-//            }
             Amplify.Auth.confirmSignUp(
                 email, verificationCode,
                 { result ->
@@ -62,5 +70,21 @@ class VerifyActivity : AppCompatActivity() {
             )
         }
 
+    }
+
+    private fun ResendTimer() {
+        resendCode.isEnabled = false  // Disable button
+        timer.visibility = View.VISIBLE  // Show timer text
+
+        object : CountDownTimer(60000, 1000) {  // 60 seconds countdown
+            override fun onTick(millisUntilFinished: Long) {
+                timer.text = "Resend in ${millisUntilFinished / 1000}s"
+            }
+
+            override fun onFinish() {
+                resendCode.isEnabled = true  // Enable button
+                timer.visibility = View.GONE  // Hide timer
+            }
+        }.start()
     }
 }

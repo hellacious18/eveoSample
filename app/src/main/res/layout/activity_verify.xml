@@ -5,31 +5,96 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="20dp"
+    android:padding="30dp"
     tools:context=".VerifyActivity">
 
-    <EditText
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="Verify Code"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:hint="Please enter the code we just sent to email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
         android:id="@+id/editTextVerifyEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="email"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="example@gmail.com"
+        android:textColor="@color/brown"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        tools:layout_editor_absoluteX="30dp" />
 
     <EditText
         android:id="@+id/editTextVerifyCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="code"
+        android:gravity="center"
+        android:background="@drawable/edittext_background"
+        android:layout_marginTop="40dp"
+        android:hint="******"
+        android:letterSpacing="2"
+        android:inputType="number"
         app:layout_constraintTop_toBottomOf="@+id/editTextVerifyEmail" />
 
-    <Button
-        android:id="@+id/buttonVerify"
+    <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign Up"
+        android:layout_marginTop="40dp"
+        android:hint="Didn't receive verification code?"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextVerifyCode" />
+
+    <TextView
+        android:id="@+id/textViewVerifyResendCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Resend Code"
+        android:textColor="@color/brown"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textViewVerifyTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Try again in 60s"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewVerifyResendCode" />
+
+
+    <Button
+        android:id="@+id/buttonVerify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/brown"
+        android:layout_marginTop="40dp"
+        android:text="Verify"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewVerifyTimer" />
 
 
 

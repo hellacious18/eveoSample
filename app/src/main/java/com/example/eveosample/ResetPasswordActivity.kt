@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +16,7 @@ import com.amplifyframework.core.Amplify
 
 class ResetPasswordActivity : AppCompatActivity() {
 
-    private lateinit var email: EditText
+    private lateinit var email: TextView
     private lateinit var code: EditText
     private lateinit var password: EditText
     private lateinit var password2: EditText
@@ -26,14 +27,17 @@ class ResetPasswordActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_reset_password)
 
-        email = findViewById(R.id.editTextEmail)
+        email = findViewById(R.id.textViewEmail)
         code = findViewById(R.id.editTextCode)
         password = findViewById(R.id.editTextPassword)
         password2 = findViewById(R.id.editTextPassword2)
         resetPasswordButton = findViewById(R.id.resetPasswordButton)
 
+        val eMail = intent.getStringExtra("EMAIL_KEY") ?: ""
+        email.setText(eMail) // Set the email in the TextView
+
         resetPasswordButton.setOnClickListener {
-            val email = email.text.toString()
+            val email = eMail.toString()
             val code = code.text.toString()
             val password = password.text.toString()
             val password2 = password2.text.toString()
@@ -44,8 +48,8 @@ class ResetPasswordActivity : AppCompatActivity() {
             }
 
             Amplify.Auth.confirmResetPassword(email, password, code,
-                { Log.i("AuthQuickstart", "New password confirmed")
-//                    Toast.makeText(this, "New Password Updated", Toast.LENGTH_SHORT).show()
+                {
+                    Log.i("AuthQuickstart", "New password confirmed")
                     startActivity(Intent(this, LoginActivity::class.java))
                     finish()
                 },

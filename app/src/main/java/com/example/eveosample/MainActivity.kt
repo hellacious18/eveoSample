@@ -41,15 +41,12 @@ class MainActivity : AppCompatActivity() {
             Log.e("Amplify", "Initialization failed", e)
         }
 
+        // If signed in, navigate to HomeActivity
         Amplify.Auth.fetchAuthSession(
             { authSession ->
                 if (authSession.isSignedIn) {
-                    // If signed in, navigate to HomeActivity
                     startActivity(Intent(this, HomeActivity::class.java))
                     finish()  // Close MainActivity so the user can't go back
-                } else {
-                    // User is not signed in, continue with the sign-up or login process
-//                    Toast.makeText(this, "Please sign in or sign up", Toast.LENGTH_SHORT).show()
                 }
             },
             { error: AuthException ->
@@ -83,7 +80,10 @@ class MainActivity : AppCompatActivity() {
                 options,
                 { result ->
                     Log.d("AuthQuickStart", "Sign up result: $result")
-                    startActivity(Intent(this, VerifyActivity::class.java))
+                    val intent = Intent(this, VerifyActivity::class.java)
+                    intent.putExtra("EMAIL_KEY", emailText)  // Pass the email
+                    startActivity(intent)
+
                 },
                 { error ->
                     Log.d("AuthQuickStart", "Sign up failed", error)
@@ -101,8 +101,31 @@ class MainActivity : AppCompatActivity() {
 
         forgotPassword.paintFlags = forgotPassword.paintFlags or android.graphics.Paint.UNDERLINE_TEXT_FLAG
         forgotPassword.setOnClickListener {
-            startActivity(Intent(this, ForgotPasswordActivity::class.java))
-            finish()
+            val email = email.text.toString()
+
+            if (email.isEmpty()) {
+                Toast.makeText(this, "Please enter email ", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            Amplify.Auth.resetPassword(email,
+                { result ->
+                    Log.i("AuthQuickstart", "Password reset OK: $result")
+                    runOnUiThread {
+                        Toast.makeText(this, "Check your email for reset code", Toast.LENGTH_SHORT).show()
+                    }
+                    val intent = Intent(this, ResetPasswordActivity::class.java)
+                    intent.putExtra("EMAIL_KEY", email)  // Pass the email
+                    startActivity(intent)
+                    finish()
+                },
+                { error ->
+                    Log.e("AuthQuickstart", "Password reset failed: ${error.localizedMessage}", error)
+                    runOnUiThread {
+                        Toast.makeText(this, "Password reset failed: ${error.localizedMessage}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            )
+
         }
 
     }

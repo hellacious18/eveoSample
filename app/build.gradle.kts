@@ -49,12 +49,10 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
 
-
     implementation ("com.amplifyframework:aws-auth-cognito:2.24.0")
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.0")
 
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
-
+    implementation("androidx.fragment:fragment-ktx:1.8.5")
 
 }

@@ -5,28 +5,91 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="20dp"
+    android:padding="30dp"
     tools:context=".LoginActivity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="Login"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:hint="Hi! Welcome back, you've been missed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="E-mail"
+        android:layout_marginVertical="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="email"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:hint="example@gmail.com"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/edittext_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editTextPassword"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        android:layout_marginVertical="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextPassword"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="password"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+        android:inputType="textPassword"
+        android:gravity="center"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/edittext_background"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
+        tools:layout_editor_absoluteX="50dp" />
 
-    <Button
-        android:id="@+id/buttonLogin2"
+    <TextView
+        android:id="@+id/textViewForgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:text="Forgot Password?"
+        android:textColor="@color/brown"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+
+    <Button
+        android:id="@+id/buttonLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/brown"
         android:text="Login"
+        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
