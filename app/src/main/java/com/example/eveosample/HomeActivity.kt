@@ -30,12 +30,13 @@ class HomeActivity : AppCompatActivity() {
 
         //passing email to the profile fragment
         val email = intent.getStringExtra("EMAIL_KEY") ?: ""
-        val fragment = ProfileFragment()
-        val bundle = Bundle()
-        bundle.putString("EMAIL_KEY", email)
-        fragment.arguments = bundle
+        val profileFragment = ProfileFragment().apply {
+            arguments = Bundle().apply {
+                putString("EMAIL_KEY", email)
+            }
+        }
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_view, fragment)
+            .replace(R.id.fragment_container_view, profileFragment)
             .commit()
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView)

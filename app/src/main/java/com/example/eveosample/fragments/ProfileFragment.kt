@@ -10,9 +10,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.amplifyframework.auth.cognito.result.AWSCognitoAuthSignOutResult
 import com.amplifyframework.core.Amplify
+import com.example.eveosample.LoginActivity
 import com.example.eveosample.MainActivity
 import com.example.eveosample.R
 import com.example.eveosample.adapters.OptionsAdapter
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
 class ProfileFragment : Fragment(R.layout.fragment_profile){
 
@@ -32,45 +35,46 @@ class ProfileFragment : Fragment(R.layout.fragment_profile){
                 0 -> {
                     Toast.makeText(requireContext(), "Account clicked", Toast.LENGTH_SHORT).show()
                 }
-
                 1 -> {
-                    Toast.makeText(requireContext(), "Notifications clicked", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(requireContext(), "Notifications clicked", Toast.LENGTH_SHORT).show()
                 }
-
                 2 -> {
+                    // Sign out from Amplify (Cognito)
                     Amplify.Auth.signOut { signOutResult ->
-                        when(signOutResult) {
+                        when (signOutResult) {
                             is AWSCognitoAuthSignOutResult.CompleteSignOut -> {
-                                // Sign Out completed fully and without errors.
-                                Log.i("AuthQuickStart", "Signed out successfully")
-//                        Toast.makeText(this, "Signed out successfully", Toast.LENGTH_SHORT).show()
-                                startActivity(Intent(requireContext(), MainActivity::class.java))
+                                Log.i("AuthQuickStart", "Amplify sign-out successful")
+                                // Now, sign out from Google
+                                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                    .requestEmail()  // or add .requestIdToken(...) if needed
+                                    .build()
+                                val googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+                                googleSignInClient.signOut().addOnCompleteListener {
+                                    Log.i("AuthQuickStart", "Google sign-out completed")
+                                    // Navigate back to MainActivity (or LoginActivity)
+                                    startActivity(Intent(requireContext(), MainActivity::class.java))
+                                }
                             }
                             is AWSCognitoAuthSignOutResult.PartialSignOut -> {
-                                // Sign Out completed with some errors. User is signed out of the device.
+                                // Handle partial sign-out errors if needed
                                 signOutResult.hostedUIError?.let {
                                     Log.e("AuthQuickStart", "HostedUI Error", it.exception)
-                                    // Optional: Re-launch it.url in a Custom tab to clear Cognito web session.
-
                                 }
                                 signOutResult.globalSignOutError?.let {
                                     Log.e("AuthQuickStart", "GlobalSignOut Error", it.exception)
-                                    // Optional: Use escape hatch to retry revocation of it.accessToken.
                                 }
                                 signOutResult.revokeTokenError?.let {
                                     Log.e("AuthQuickStart", "RevokeToken Error", it.exception)
-                                    // Optional: Use escape hatch to retry revocation of it.refreshToken.
                                 }
                             }
                             is AWSCognitoAuthSignOutResult.FailedSignOut -> {
-                                // Sign Out failed with an exception, leaving the user signed in.
-                                Log.e("AuthQuickStart", "Sign out Failed", signOutResult.exception)
+                                Log.e("AuthQuickStart", "Amplify sign-out failed", signOutResult.exception)
                             }
                         }
                     }
                 }
             }
         }
+
     }
 }

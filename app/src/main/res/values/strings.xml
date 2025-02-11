@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">eveoSample</string>
+    <string name="GOOGLE_WEBCLIENT_ID">554104956078-l6jmg32p5a73gt65uqr9pb92g0n7sj0r.apps.googleusercontent.com</string>
+    <string name="GOOGLE_ANDROIDCLIENT_ID">554104956078-henoasrnbcbvm0mq7fjtui867flksdfm.apps.googleusercontent.com</string>
+    <string name="GOOGLE_IDENTITY_POOL_ID">ap-south-1:9e1479b9-b57c-4373-8933-36e4db7a0e37</string>
+
+    <string name="IDENTITY_POOL_ID">ap-south-1:832e2048-9579-4cc9-b28f-ce57a88cf983</string>
+    <string name="IDENTITY_ID">ap-south-1:c0ed84b6-6bc2-c365-0157-081527c0dd1b</string>
+    <string name="REGION">ap-south-1</string>
+    <string name="USER_POOL_ID">ap-south-1_ONe8TDVe7</string>
+
+
 </resources>

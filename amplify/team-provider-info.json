@@ -1,19 +1,19 @@
 {
-  "dev": {
+  "androiddev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-eveosample-dev-b6393-authRole",
-      "UnauthRoleArn": "arn:aws:iam::828618618475:role/amplify-eveosample-dev-b6393-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::828618618475:role/amplify-eveosample-dev-b6393-authRole",
-      "Region": "ca-central-1",
-      "DeploymentBucketName": "amplify-eveosample-dev-b6393-deployment",
-      "UnauthRoleName": "amplify-eveosample-dev-b6393-unauthRole",
-      "StackName": "amplify-eveosample-dev-b6393",
-      "StackId": "arn:aws:cloudformation:ca-central-1:828618618475:stack/amplify-eveosample-dev-b6393/e0a30500-e2b6-11ef-ae8d-0eda16a1d471",
-      "AmplifyAppId": "dp8q38a8xrqne"
+      "AuthRoleName": "amplify-eveosample-androiddev-45753-authRole",
+      "UnauthRoleArn": "arn:aws:iam::828618618475:role/amplify-eveosample-androiddev-45753-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::828618618475:role/amplify-eveosample-androiddev-45753-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-eveosample-androiddev-45753-deployment",
+      "UnauthRoleName": "amplify-eveosample-androiddev-45753-unauthRole",
+      "StackName": "amplify-eveosample-androiddev-45753",
+      "StackId": "arn:aws:cloudformation:ap-south-1:828618618475:stack/amplify-eveosample-androiddev-45753/b5465640-e78f-11ef-810a-0acc24e9c161",
+      "AmplifyAppId": "d1blewkgdtnqg"
     },
     "categories": {
       "auth": {
-        "eveosample16a4fe89": {}
+        "eveosamplee1e6bfc3": {}
       }
     }
   }

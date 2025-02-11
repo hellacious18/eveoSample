@@ -1,6 +1,7 @@
 package com.example.eveosample
 
 import android.content.Intent
+import android.media.Image
 import android.os.Bundle
 import android.text.Html
 import androidx.activity.enableEdgeToEdge
@@ -12,25 +13,46 @@ import com.amplifyframework.core.Amplify
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.amplifyframework.auth.AuthException
 import com.amplifyframework.auth.AuthUserAttributeKey
 import com.amplifyframework.auth.options.AuthSignUpOptions
 import com.amplifyframework.auth.result.AuthSignUpResult
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var googleSignInClient: GoogleSignInClient
+
+    companion object {
+        private const val RC_SIGN_IN = 9001
+        private const val TAG = "MainActivity"
+    }
 
     private lateinit var email: EditText
     private lateinit var password: EditText
     private lateinit var signUpButton: Button
     private lateinit var loginButton: TextView
     private lateinit var forgotPassword: TextView
+    private lateinit var googleSignInButton: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+        email = findViewById(R.id.editTextEmail)
+        password = findViewById(R.id.editTextPassword)
+        signUpButton = findViewById(R.id.buttonSignUp)
+        loginButton = findViewById(R.id.textViewLogIn)
+        forgotPassword = findViewById(R.id.textViewForgotPassword)
+        googleSignInButton = findViewById(R.id.imageViewGoogle)
 
         // Initialize Amplify
         try {
@@ -54,11 +76,21 @@ class MainActivity : AppCompatActivity() {
             }
         )
 
-        email = findViewById(R.id.editTextEmail)
-        password = findViewById(R.id.editTextPassword)
-        signUpButton = findViewById(R.id.buttonSignUp)
-        loginButton = findViewById(R.id.textViewLogIn)
-        forgotPassword = findViewById(R.id.textViewForgotPassword)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail() // Request user's email address.
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        // Check if the user is already signed in. If so, navigate to HomeActivity.
+        val account: GoogleSignInAccount? = GoogleSignIn.getLastSignedInAccount(this)
+        if (account != null) {
+            startActivity(Intent(this, HomeActivity::class.java).apply {
+                putExtra("EMAIL_KEY", account.email)
+            })
+            finish()
+            return
+        }
 
         signUpButton.setOnClickListener {
             val emailText = email.text.toString()
@@ -129,5 +161,33 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+
+
+        googleSignInButton.setOnClickListener {
+            val signInIntent = googleSignInClient.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
+        }
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                // Successfully signed in.
+                Log.d(TAG, "Google sign-in successful. Email: ${account?.email}")
+                val intent = Intent(this, HomeActivity::class.java)
+                intent.putExtra("EMAIL_KEY", account?.email)  // Pass the email
+                startActivity(intent)
+                finish()
+            } catch (e: ApiException) {
+                // Sign in failed, display a message to the user.
+                Log.w(TAG, "Google sign-in failed, code=" + e.statusCode)
+                Toast.makeText(this, "Google sign-in failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
