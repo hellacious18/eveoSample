@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ListView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.amplifyframework.auth.cognito.result.AWSCognitoAuthSignOutResult
@@ -22,11 +23,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val email = arguments?.getString("EMAIL_KEY") ?: ""
-        Log.d("ProfileFragment", "Received email: $email")
+        val textView5 = view.findViewById<TextView>(R.id.textView5)
+        val listView = view.findViewById<ListView>(R.id.listViewOptions)
+
+        //recieve email from shared pref
+        val sharedPref = requireActivity().getSharedPreferences("AppPrefs", android.content.Context.MODE_PRIVATE)
+        val email = sharedPref.getString("EMAIL_KEY", "") ?: ""
+        textView5.text = email
 
         val optionsList = listOf("Account", "Notifications", "Logout")
-        val listView = view.findViewById<ListView>(R.id.listViewOptions)
         val adapter = OptionsAdapter(requireContext(), optionsList)
         listView.adapter = adapter
 

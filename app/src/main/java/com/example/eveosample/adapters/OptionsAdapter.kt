@@ -21,12 +21,4 @@ List<String>):ArrayAdapter<String>(context,
         return view
     }
 
-
-//    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-//        val view = super.getView(position, convertView, parent)
-//        val textView = view.findViewById<TextView>(android.R.id.text1)
-////        textView.setTextColor(ContextCompat.getColor(context, R.color.black)) // Optional: set text color
-//        return view
-//    }
-
 }

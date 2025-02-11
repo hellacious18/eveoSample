@@ -30,6 +30,8 @@ class HomeActivity : AppCompatActivity() {
 
         //passing email to the profile fragment
         val email = intent.getStringExtra("EMAIL_KEY") ?: ""
+        Log.d("HomeActivity", "Received email: $email")
+
         val profileFragment = ProfileFragment().apply {
             arguments = Bundle().apply {
                 putString("EMAIL_KEY", email)

@@ -40,6 +40,11 @@ class LoginActivity : AppCompatActivity() {
             Amplify.Auth.signIn(email, password,
                 { result ->
                     if (result.isSignedIn) {
+
+                        //shared pref
+                        val sharedPref = getSharedPreferences("AppPrefs", android.content.Context.MODE_PRIVATE)
+                        sharedPref.edit().putString("EMAIL_KEY", email).apply()
+
                         Log.d("Login", "Log in succeeded")
                         runOnUiThread { Toast.makeText(this, "Logged in successfully", Toast.LENGTH_SHORT).show() }
                         val intent = Intent(this, HomeActivity::class.java)
