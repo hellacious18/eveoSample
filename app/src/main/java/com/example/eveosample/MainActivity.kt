@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         forgotPassword = findViewById(R.id.textViewForgotPassword)
         googleSignInButton = findViewById(R.id.imageViewGoogle)
 
+
         setupGoogleSignIn()
         handleAuthChecks()
         setupListeners()

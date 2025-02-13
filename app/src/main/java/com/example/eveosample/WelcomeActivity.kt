@@ -6,6 +6,10 @@ import android.util.Log
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import com.amazonaws.mobile.client.AWSMobileClient
+import com.amazonaws.mobile.client.Callback
+import com.amazonaws.mobile.client.UserStateDetails
 import com.amplifyframework.auth.AuthException
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
 import com.amplifyframework.core.Amplify
@@ -17,6 +21,15 @@ class WelcomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_welcome)
+
+        AWSMobileClient.getInstance().initialize(this, object : Callback<UserStateDetails> {
+            override fun onResult(result: UserStateDetails) {
+                Log.d("AWSMobileClient", "Initialized: ${result.userState}")
+            }
+            override fun onError(e: Exception) {
+                Log.e("AWSMobileClient", "Initialization error", e)
+            }
+        })
 
         try {
             Amplify.addPlugin(AWSCognitoAuthPlugin())

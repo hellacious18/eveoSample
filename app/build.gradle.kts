@@ -68,6 +68,8 @@ dependencies {
     implementation("androidx.credentials:credentials-play-services-auth:1.5.0-rc01")
 //    implementation("com.google.android.libraries.identity.googleid:googleid:1.3.0")
 
+    implementation("software.amazon.awssdk:aws-core:2.30.17")
 
-
+    implementation("com.amazonaws:aws-android-sdk-rekognition:2.79.0")
+    implementation("com.amazonaws:aws-android-sdk-mobile-client:2.79.0")
 }
