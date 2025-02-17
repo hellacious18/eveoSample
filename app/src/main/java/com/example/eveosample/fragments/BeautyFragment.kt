@@ -50,20 +50,18 @@ class BeautyFragment : Fragment(R.layout.fragment_beauty) {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             val imageUri = data.data
             imageUri?.let {
-                // Display image
                 imageView.setImageURI(it)
 
-                // Convert image to Bitmap and get dimensions
+                //image to Bitmap
                 val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, it)
                 val imageWidth = bitmap.width
                 val imageHeight = bitmap.height
 
-                // Convert bitmap to ByteArray
+                //bitmap to ByteArray
                 val stream = ByteArrayOutputStream()
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
                 val imageBytes = stream.toByteArray()
 
-                // Call Rekognition and pass image dimensions
                 analyzeFaceWithRekognition(imageBytes, imageWidth, imageHeight)
             }
         }
@@ -162,7 +160,7 @@ class BeautyFragment : Fragment(R.layout.fragment_beauty) {
             }
         }
 
-        // 5. Additional Refinements: Based on facial hair, eyebrow shape, etc.
+        // 5. Additional Refinements
         if (faceDetail.beard?.value == true) {
             builder.append("- Your beard adds character; keeping it well-groomed will maintain a sharp appearance.\n")
         } else {

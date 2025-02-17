@@ -72,4 +72,7 @@ dependencies {
 
     implementation("com.amazonaws:aws-android-sdk-rekognition:2.79.0")
     implementation("com.amazonaws:aws-android-sdk-mobile-client:2.79.0")
+
+    implementation ("com.squareup.okhttp3:okhttp:4.10.0")
+
 }

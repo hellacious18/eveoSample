@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -19,6 +20,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var password: EditText
     private lateinit var loginButton: Button
     private lateinit var forgotPassword: TextView
+    private lateinit var backbutton: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +32,13 @@ class LoginActivity : AppCompatActivity() {
         password = findViewById(R.id.editTextPassword)
         loginButton = findViewById(R.id.buttonLogin)
         forgotPassword = findViewById(R.id.textViewForgotPassword)
+        backbutton = findViewById(R.id.backbutton)
+
+        backbutton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
 
         loginButton.setOnClickListener {
